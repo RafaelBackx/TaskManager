@@ -1,0 +1,26 @@
+.far,.fas{
+    color:#000;
+    font-size: 25px;
+}
+.fa-times-circle:hover{
+    color:#F00;
+}
+.fa-check-circle:hover{
+    color:#0F0;
+}
+.fa-edit:hover{
+    color:#3a51ee;
+}
+.fa-plus-circle:hover{
+    color: #3a51ee;
+}
+.fa-arrow-alt-circle-down:hover{
+    color: #3a51ee;
+}
+.button{
+    display: block;
+    background: none;
+    border: none;
+    padding: 2px;
+    margin: 0;
+}
