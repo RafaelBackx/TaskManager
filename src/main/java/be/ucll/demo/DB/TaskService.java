@@ -35,6 +35,7 @@ public class TaskService {
 
     public void delete(long id){
         taskRepository.deleteById(id);
+        subTaskRepository.removeAllByTaskid(id);
     }
 
     public void update(TaskDTO dto){

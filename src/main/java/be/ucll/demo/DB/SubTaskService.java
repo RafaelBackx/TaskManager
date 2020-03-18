@@ -24,7 +24,9 @@ public class SubTaskService {
     }
 
     public void update(SubTaskDTO dto){
-        repository.save(toEntity(dto));
+        SubTask s = toEntity(dto);
+        System.out.println(s.getName() + s.getDescription() + s.isCompleted() + s.getTaskid() + s.getId());
+        repository.update(s.getName(),s.getDescription(),s.isCompleted(),s.getTaskid(),s.getId());
     }
 
     public List<SubTask> getAll(long id){

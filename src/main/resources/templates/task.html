@@ -30,7 +30,7 @@
     <p class="p-2" th:text="${task.description}"></p>
     <ul class="list-group p-2">
         <li class="list-group-item w-25 d-flex justify-content-between mt-3" th:each="subtask : ${subtasks}">
-            <a th:href="${'/tasks/sub/' + subtask.id}" th:text="${subtask.toString()}"></a>
+            <a th:href="${'/tasks/'+task.id+'/sub/' + subtask.id}" th:text="${subtask.toString()}"></a>
             <div class="d-flex justify-content-end">
                 <form method="post" th:action="${'/tasks/sub/remove/' + subtask.id}">
                     <button class="button" type="submit"><i class="far fa-times-circle"></i></button>

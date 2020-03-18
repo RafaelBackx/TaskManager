@@ -36,7 +36,7 @@
             <ul class="list-group pl-2 d-none dropdown">
                 <div th:each="subtask : ${subtasks.get(task.id)}">
                     <li class="list-group-item  d-flex justify-content-between mt-1 ml-3" th:classappend="${subtask.isCompleted()} ? list-group-item-success" >
-                        <a th:href="${'/tasks/sub/' + subtask.id}" th:text="${subtask.toString()}"></a>
+                        <a th:href="${'/tasks/'+task.id+'/sub/' + subtask.id}" th:text="${subtask.toString()}"></a>
                         <div class="d-flex justify-content-end">
                             <form method="post" th:action="${'/tasks/sub/remove/' + subtask.id}">
                                 <button class="button" type="submit"><i class="far fa-times-circle"></i></button>

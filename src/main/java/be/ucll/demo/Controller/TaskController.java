@@ -30,12 +30,21 @@ public class TaskController {
         Task ipminor = new Task("finish ip minor","complete crud operation", LocalDateTime.of(2020,3,17,14,30));
         SubTask changeGet = new SubTask("get to post","change all faulty get to post request");
         SubTask showSub = new SubTask("show SubTask","make a page to show subtasks, if you see this it means you can mark this task done");
+        SubTask validation = new SubTask("validation","add validation to each form");
         taskService.add(createDTOfromTask(ipminor));
+        validation.setTaskid(1);
         changeGet.setTaskid(1);
         showSub.setTaskid(1);
         subTaskService.add(createDTOfromSubtask(changeGet));
         subTaskService.add(createDTOfromSubtask(showSub));
+        subTaskService.add(createDTOfromSubtask(validation));
         return "db";
+    }
+
+    @GetMapping("/sub")
+    public String getAllSubTasks(){
+        System.out.println(subTaskService.getAll());
+        return "tasks";
     }
 
 
@@ -127,9 +136,10 @@ public class TaskController {
         return "redirect:/tasks";
     }
 
-    @GetMapping("/tasks/sub/{subtaskid}")
-    public String getSubTask(@PathVariable("subtaskid") long id, Model model){
-        model.addAttribute("task",subTaskService.get(id));
+    @GetMapping("/tasks/{id}/sub/{subtaskid}")
+    public String getSubTask(@PathVariable("subtaskid") long subtaskid, Model model,@PathVariable("id") long id){
+        model.addAttribute("subtask",subTaskService.get(subtaskid));
+        model.addAttribute("task",taskService.get(id));
         return "subtask";
     }
 
@@ -138,6 +148,21 @@ public class TaskController {
         Task t = taskService.get(id);
         t.setCompleted(!t.isCompleted());
         taskService.update(createDTOfromTask(t));
+        return "redirect:/tasks";
+    }
+
+    @GetMapping("/tasks/{id}/sub/edit/{subtaskid}")
+    public String goToEdit(@PathVariable("subtaskid") long subtaskid,Model model,@PathVariable("id") long id){
+        model.addAttribute("subtask",subTaskService.get(subtaskid));
+        model.addAttribute("task",taskService.get(id));
+        return "editSubTask";
+    }
+
+    @PostMapping("/tasks/{id}/sub/edit/{subtaskid}")
+    public String editSubTask(@ModelAttribute SubTask subtask,@PathVariable("subtaskid")long subtaskid, @PathVariable("id") long taskid){
+        subtask.setTaskid(taskid);
+        subtask.setId(subtaskid);
+        subTaskService.update(createDTOfromSubtask(subtask));
         return "redirect:/tasks";
     }
 
