@@ -101,4 +101,13 @@ public class Task {
     public void setSubtasks(List<SubTask> subtasks){
         this.subtasks = subtasks;
     }
+
+    @Override
+    public boolean equals(Object t){
+        if (t instanceof Task){
+            Task obj = (Task) t;
+            return obj.getId() == this.id && obj.getName().equalsIgnoreCase(this.name) && obj.getDescription().equalsIgnoreCase(this.description) && obj.getDeadline().equals(this.deadline) && obj.isCompleted() == this.isCompleted();
+        }
+        return false;
+    }
 }

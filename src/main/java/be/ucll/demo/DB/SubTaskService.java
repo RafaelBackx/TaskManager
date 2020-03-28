@@ -2,21 +2,41 @@ package be.ucll.demo.DB;
 
 import be.ucll.demo.DTO.SubTaskDTO;
 import be.ucll.demo.DTO.TaskDTO;
+import be.ucll.demo.Domain.DTOFormatter;
 import be.ucll.demo.Domain.SubTask;
+import be.ucll.demo.Domain.Task;
 import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static be.ucll.demo.Domain.DTOFormatter.createDTOfromSubtask;
+
 @Service
 public class SubTaskService {
-    @Autowired
-    SubTaskRepository repository;
+    private final SubTaskRepository repository;
 
-    public void add(SubTaskDTO dto){
-        repository.save(toEntity(dto));
+    @Autowired
+    public SubTaskService(SubTaskRepository repository){
+        this.repository = repository;
+        SubTask changeGet = new SubTask("get to post","change all faulty get to post request");
+        SubTask showSub = new SubTask("show SubTask","make a page to show subtasks, if you see this it means you can mark this task done");
+        SubTask validation = new SubTask("validation","add validation to each form");
+        validation.setTaskid(1);
+        changeGet.setTaskid(1);
+        showSub.setTaskid(1);
+        add(createDTOfromSubtask(changeGet));
+        add(createDTOfromSubtask(showSub));
+        add(createDTOfromSubtask(validation));
+    }
+
+    public SubTaskDTO add(SubTaskDTO dto){
+        repository.save(DTOFormatter.DTOToSubtask(dto));
+        return dto;
     }
 
     public void delete(long id){
@@ -24,31 +44,30 @@ public class SubTaskService {
     }
 
     public void update(SubTaskDTO dto){
-        SubTask s = toEntity(dto);
+        SubTask s = DTOFormatter.DTOToSubtask(dto);
         System.out.println(s.getName() + s.getDescription() + s.isCompleted() + s.getTaskid() + s.getId());
         repository.update(s.getName(),s.getDescription(),s.isCompleted(),s.getTaskid(),s.getId());
     }
 
-    public List<SubTask> getAll(long id){
-        return repository.getAllSubTaskByTaskid(id);
+    public List<SubTaskDTO> getAll(long id){
+        List<SubTaskDTO> result = new ArrayList<>();
+        for (SubTask t : repository.getAllSubTaskByTaskid(id)){
+            result.add(DTOFormatter.createDTOfromSubtask(t));
+        }
+        return result;
     }
 
-    public List<SubTask> getAll(){
-        return repository.findAll();
+    public List<SubTaskDTO> getAll(){
+        List<SubTaskDTO> result = new ArrayList<>();
+        for (SubTask t : repository.findAll()){
+            result.add(DTOFormatter.createDTOfromSubtask(t));
+        }
+        return result;
     }
 
-    public SubTask get(long  id){
+    public SubTaskDTO get(long  id){
         Optional<SubTask> optionalSubTask = repository.findById(id);
-        return optionalSubTask.orElseThrow(() -> new DbException("subtask not found"));
+        return DTOFormatter.createDTOfromSubtask(optionalSubTask.orElseThrow(() -> new DbException("subtask not found")));
     }
 
-    public SubTask toEntity(SubTaskDTO dto){
-        SubTask subTask = new SubTask();
-        subTask.setId(dto.getId());
-        subTask.setTaskid(dto.getTaskid());
-        subTask.setName(dto.getName());
-        subTask.setDescription(dto.getDescription());
-        subTask.setCompleted(dto.isCompleted());
-        return subTask;
-    }
 }
