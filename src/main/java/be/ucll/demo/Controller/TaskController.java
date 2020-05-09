@@ -28,6 +28,11 @@ public class TaskController {
     @Autowired
     SubTaskService subTaskService;
 
+    @GetMapping("/")
+    public String index(){
+        return "index";
+    }
+
     @GetMapping("/db")
     public String dbtest(){
         // create default tasks
