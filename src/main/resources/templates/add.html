@@ -2,35 +2,41 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="#{Add Task}"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="/tasks">Tasks</a></li>
-        <li class="nav-item active"><a class="nav-link" href="/add">Add Task</a></li>
+        <li class="nav-item"><a class="nav-link" href="/tasks" th:text="#{Tasks}"></a></li>
+        <li class="nav-item active"><a class="nav-link" href="/add" th:text="#{Add Task}"></a></li>
     </ul>
+    <div id="language" class="d-flex justify-content-end">
+        <a href="#">NL</a>
+        <a href="#">EN</a>
+    </div>
 </nav>
 <form action="/tasks" class="needs-validation p-2" method="post" th:object="${task}" novalidate>
+    <div class="p-2">
+        <p class="alert alert-danger p-2" th:errors="*{name}"></p>
+        <p class="alert alert-danger p-2" th:errors="*{description}"></p>
+        <p class="alert alert-danger p-2" th:errors="*{deadline}"></p>
+    </div>
     <div class="form-group">
-        <label for="name">name: </label>
+        <label for="name" th:text="#{name}">: </label>
         <input th:field="*{name}" class="form-control" id="name" name="name" type="text" placeholder="task name" required>
         <div class="valid-feedback">Valid</div>
-        <p th:errors="*{name}"></p>
     </div>
     <div class="form-group">
-        <label for="description">description: </label>
+        <label for="description" th:text="#{description}">: </label>
         <input th:field="*{description}" class="form-control" id="description" name="description" type="text" placeholder="description" required>
         <div class="valid-feedback">Valid</div>
-        <p th:errors="*{description}"></p>
     </div>
     <div class="form-group">
-        <label for="deadline">deadline: </label>
+        <label for="deadline" th:text="#{deadline}">: </label>
         <input th:field="*{deadline}" class="form-control" id="deadline" name="deadline" type="datetime-local" required>
         <div class="valid-feedback">Valid</div>
-        <p th:errors="*{deadline}"></p>
     </div>
     <input class="btn btn-primary" type="submit" value="add task">
 </form>
@@ -38,5 +44,6 @@
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="/language.js"></script>
 </body>
 </html>

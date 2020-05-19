@@ -4,6 +4,7 @@ import be.ucll.demo.DB.SubTaskService;
 import be.ucll.demo.DB.TaskService;
 import be.ucll.demo.DTO.SubTaskDTO;
 import be.ucll.demo.DTO.TaskDTO;
+import be.ucll.demo.Domain.DTOFormatter;
 import be.ucll.demo.Domain.SubTask;
 import be.ucll.demo.Domain.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static be.ucll.demo.Domain.DTOFormatter.createDTOfromSubtask;
 
 @Controller
 public class TaskController {
@@ -24,6 +28,11 @@ public class TaskController {
     @Autowired
     SubTaskService subTaskService;
 
+    @GetMapping("/")
+    public String index(){
+        return "index";
+    }
+
     @GetMapping("/db")
     public String dbtest(){
         // create default tasks
@@ -31,7 +40,7 @@ public class TaskController {
         SubTask changeGet = new SubTask("get to post","change all faulty get to post request");
         SubTask showSub = new SubTask("show SubTask","make a page to show subtasks, if you see this it means you can mark this task done");
         SubTask validation = new SubTask("validation","add validation to each form");
-        taskService.add(createDTOfromTask(ipminor));
+        taskService.add(DTOFormatter.createDTOfromTask(ipminor));
         validation.setTaskid(1);
         changeGet.setTaskid(1);
         showSub.setTaskid(1);
@@ -50,14 +59,18 @@ public class TaskController {
 
     @GetMapping("/tasks")
     public String getTasks(Model model){
-        List<Task> tasks = taskService.getAll();
+        List<Task> tasks = new ArrayList<>();
+        for (TaskDTO t:taskService.getAll()){
+            tasks.add(DTOFormatter.DTOToTask(t));
+        }
         Map<Long,List<SubTask>> subtasks = new HashMap<>();
         model.addAttribute("tasks",tasks);
         for (Task t : tasks){
-            List<SubTask> subTaskList = subTaskService.getAll(t.getId());
+            List<SubTask> subTaskList = new ArrayList<>();
+            for (SubTaskDTO dto :subTaskService.getAll(t.getId())){
+                subTaskList.add(DTOFormatter.DTOToSubtask(dto));
+            }
             if(subTaskList.size()>0)
-            System.out.println(subTaskList.get(0).isCompleted());
-
             subtasks.put(t.getId(),subTaskList);
         }
         model.addAttribute("subtasks",subtasks);
@@ -65,13 +78,11 @@ public class TaskController {
     }
 
     @PostMapping("/tasks")
-    public String addTask(@ModelAttribute @Valid Task task, BindingResult binding){
+    public String addTask(@ModelAttribute("task") @Valid TaskDTO task, BindingResult binding){
         if (binding.hasErrors()){
             return "add";
         }
-        System.out.println(task.getId());
-        taskService.add(createDTOfromTask(task));
-        System.out.println(task.getId());
+        taskService.add(task);
         return "redirect:/tasks";
     }
 
@@ -84,7 +95,7 @@ public class TaskController {
 
     @GetMapping("/add")
     public String goToAddPage(Model model){
-        model.addAttribute("task",new Task());
+        model.addAttribute("task",new TaskDTO());
         return "add";
     }
 
@@ -96,15 +107,26 @@ public class TaskController {
 
     @GetMapping("/tasks/edit/{id}")
     public String goToEdit(Model model,@PathVariable("id") long id){
-        model.addAttribute("task", taskService.get(id));
+        TaskDTO dto = new TaskDTO();
+        TaskDTO getTask = taskService.get(id);
+        dto.setId(getTask.getId());
+        dto.setName(getTask.getName());
+        dto.setDescription(getTask.getDescription());
+        dto.setDeadline(getTask.getDeadline());
+        dto.setCompleted(getTask.isCompleted());
+        dto.setSubtasks(getTask.getSubtasks());
+        model.addAttribute("task", dto);
         return "editTask";
     }
 
     @PostMapping("/tasks/edit/{id}")
-    public String edit(@ModelAttribute Task task, @PathVariable("id") long id){
-        Task t  = taskService.get(id);
+    public String edit(@ModelAttribute("task") @Valid TaskDTO task, @PathVariable("id") long id, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return "editTask";
+        }
+        TaskDTO t  = taskService.get(id);
         task.setSubtasks(t.getSubtasks());
-        taskService.update(createDTOfromTask(task));
+        taskService.update(task);
         return "redirect:/tasks";
     }
 
@@ -130,9 +152,9 @@ public class TaskController {
 
     @PostMapping("/tasks/sub/{subtaskid}/accept")
     public String completeSubtask(@PathVariable("subtaskid") long subtaskid){
-        SubTask subTask = subTaskService.get(subtaskid);
+        SubTask subTask = DTOFormatter.DTOToSubtask(subTaskService.get(subtaskid));
         subTask.setCompleted(!subTask.isCompleted());
-        subTaskService.update(createDTOfromSubtask(subTask));
+        subTaskService.update(DTOFormatter.createDTOfromSubtask(subTask));
         return "redirect:/tasks";
     }
 
@@ -145,9 +167,9 @@ public class TaskController {
 
     @PostMapping("/tasks/{id}/accept")
     public String changeState(@PathVariable("id") long id){
-        Task t = taskService.get(id);
+        Task t = DTOFormatter.DTOToTask(taskService.get(id));
         t.setCompleted(!t.isCompleted());
-        taskService.update(createDTOfromTask(t));
+        taskService.update(DTOFormatter.createDTOfromTask(t));
         return "redirect:/tasks";
     }
 
@@ -164,26 +186,5 @@ public class TaskController {
         subtask.setId(subtaskid);
         subTaskService.update(createDTOfromSubtask(subtask));
         return "redirect:/tasks";
-    }
-
-    private SubTaskDTO createDTOfromSubtask(SubTask subTask) {
-        SubTaskDTO dto = new SubTaskDTO();
-        dto.setId(subTask.getId());
-        dto.setDescription(subTask.getDescription());
-        dto.setName(subTask.getName());
-        dto.setTaskid(subTask.getTaskid());
-        dto.setCompleted(subTask.isCompleted());
-        return dto;
-    }
-
-    private TaskDTO createDTOfromTask(Task task) {
-        TaskDTO dto = new TaskDTO();
-        dto.setId(task.getId());
-        dto.setDescription(task.getDescription());
-        dto.setName(task.getName());
-        dto.setDeadline(task.getDeadline());
-        dto.setCompleted(task.isCompleted());
-        dto.setSubtasks(task.getSubtasks());
-        return dto;
     }
 }
