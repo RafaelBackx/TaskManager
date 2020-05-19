@@ -2,6 +2,7 @@ package be.ucll.demo.DTO;
 
 import be.ucll.demo.Domain.DateFormatter;
 import be.ucll.demo.Domain.SubTask;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

@@ -18,7 +18,12 @@
         <a href="#">EN</a>
     </div>
 </nav>
-<form th:action="${'/tasks/edit/' + task.id}" class="needs-validation p-2" method="post" th:object="${task}" novalidate>
+<form th:action="${'/tasks/edit/' + task.id}" class="p-2" method="post" th:object="${task}" novalidate>
+    <div class="p-2">
+        <p class="alert alert-danger p-2" th:errors="*{name}"></p>
+        <p class="alert alert-danger p-2" th:errors="*{description}"></p>
+        <p class="alert alert-danger p-2" th:errors="*{deadline}"></p>
+    </div>
     <div class="form-group">
         <label for="name" th:text="#{name}">: </label>
         <input th:field="*{name}" class="form-control" type="text" required>
@@ -29,7 +34,7 @@
     </div>
     <div class="form-group">
         <label for="deadline" th:text="#{deadline}">: </label>
-        <input th:value="*{deadline}" th:field="*{deadline}" class="form-control" type="datetime-local" required>
+        <input th:field="*{deadline}" class="form-control" type="datetime-local" required>
     </div>
     <input class="btn btn-primary" type="submit" value="edit task">
 </form>

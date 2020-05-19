@@ -71,8 +71,6 @@ public class TaskController {
                 subTaskList.add(DTOFormatter.DTOToSubtask(dto));
             }
             if(subTaskList.size()>0)
-            System.out.println(subTaskList.get(0).isCompleted());
-
             subtasks.put(t.getId(),subTaskList);
         }
         model.addAttribute("subtasks",subtasks);
@@ -80,11 +78,11 @@ public class TaskController {
     }
 
     @PostMapping("/tasks")
-    public String addTask(@ModelAttribute @Valid Task task, BindingResult binding){
+    public String addTask(@ModelAttribute("task") @Valid TaskDTO task, BindingResult binding){
         if (binding.hasErrors()){
             return "add";
         }
-        taskService.add(DTOFormatter.createDTOfromTask(task));
+        taskService.add(task);
         return "redirect:/tasks";
     }
 
@@ -97,7 +95,7 @@ public class TaskController {
 
     @GetMapping("/add")
     public String goToAddPage(Model model){
-        model.addAttribute("task",new Task());
+        model.addAttribute("task",new TaskDTO());
         return "add";
     }
 
@@ -109,15 +107,26 @@ public class TaskController {
 
     @GetMapping("/tasks/edit/{id}")
     public String goToEdit(Model model,@PathVariable("id") long id){
-        model.addAttribute("task", taskService.get(id));
+        TaskDTO dto = new TaskDTO();
+        TaskDTO getTask = taskService.get(id);
+        dto.setId(getTask.getId());
+        dto.setName(getTask.getName());
+        dto.setDescription(getTask.getDescription());
+        dto.setDeadline(getTask.getDeadline());
+        dto.setCompleted(getTask.isCompleted());
+        dto.setSubtasks(getTask.getSubtasks());
+        model.addAttribute("task", dto);
         return "editTask";
     }
 
     @PostMapping("/tasks/edit/{id}")
-    public String edit(@ModelAttribute Task task, @PathVariable("id") long id){
-        Task t  = DTOFormatter.DTOToTask(taskService.get(id));
+    public String edit(@ModelAttribute("task") @Valid TaskDTO task, @PathVariable("id") long id, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return "editTask";
+        }
+        TaskDTO t  = taskService.get(id);
         task.setSubtasks(t.getSubtasks());
-        taskService.update(DTOFormatter.createDTOfromTask(task));
+        taskService.update(task);
         return "redirect:/tasks";
     }
 
