@@ -2,7 +2,6 @@ package be.ucll.demo.Domain;
 
 import be.ucll.demo.DTO.SubTaskDTO;
 import be.ucll.demo.DTO.TaskDTO;
-import be.ucll.demo.DTO.UserDTO;
 
 public class DTOFormatter {
 
@@ -53,31 +52,5 @@ public class DTOFormatter {
         dto.setCompleted(task.isCompleted());
         dto.setSubtasks(task.getSubtasks());
         return dto;
-    }
-
-    public static UserDTO createDTOfromUser(User user){
-        if (user == null)
-            return null;
-        UserDTO userDTO = new UserDTO();
-        userDTO.setName(user.getName());
-        userDTO.setLastname(user.getLastname());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setPassword(user.getPassword());
-        userDTO.setRole(user.getRole());
-        userDTO.setId(user.getId());
-        return userDTO;
-    }
-
-    public static User DTOToUser(UserDTO userDTO){
-        if (userDTO == null)
-            return null;
-        User user = new User();
-        user.setName(userDTO.getName());
-        user.setLastname(userDTO.getLastname());
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-        user.setRole(userDTO.getRole());
-        user.setId(userDTO.getId());
-        return user;
     }
 }
