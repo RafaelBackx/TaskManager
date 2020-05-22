@@ -3,6 +3,9 @@ package be.ucll.demo.Domain;
 import be.ucll.demo.DTO.SubTaskDTO;
 import be.ucll.demo.DTO.TaskDTO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DTOFormatter {
 
     public static SubTask DTOToSubtask(SubTaskDTO dto){
@@ -10,7 +13,7 @@ public class DTOFormatter {
             return null;
         SubTask subTask = new SubTask();
         subTask.setId(dto.getId());
-        subTask.setTaskid(dto.getTaskid());
+        subTask.setTask(dto.getTask());
         subTask.setName(dto.getName());
         subTask.setDescription(dto.getDescription());
         return subTask;
@@ -35,7 +38,7 @@ public class DTOFormatter {
         dto.setId(subTask.getId());
         dto.setDescription(subTask.getDescription());
         dto.setName(subTask.getName());
-        dto.setTaskid(subTask.getTaskid());
+        dto.setTask(subTask.getTask());
         return dto;
     }
 
@@ -49,5 +52,13 @@ public class DTOFormatter {
         dto.setDeadline(task.getDeadline());
         dto.setSubtasks(task.getSubtasks());
         return dto;
+    }
+
+    public static List<SubTask> formatToList(List<SubTaskDTO> dtos){
+        List<SubTask> result = new ArrayList<>();
+        for (SubTaskDTO dto: dtos){
+            result.add(DTOToSubtask(dto));
+        }
+        return result;
     }
 }

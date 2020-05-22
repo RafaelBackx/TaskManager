@@ -19,6 +19,10 @@
     </div>
 </nav>
 <form th:action="${'/tasks/'+ task.id +'/sub/edit/' + subtask.id}" class="needs-validation p-2" method="post" th:object="${subtask}" novalidate>
+    <div class="p-2">
+        <p class="alert alert-danger p-2" th:errors="*{name}"></p>
+        <p class="alert alert-danger p-2" th:errors="*{description}"></p>
+    </div>
     <div class="form-group">
         <label for="name" th:text="#{name}">: </label>
         <input th:field="*{name}" class="form-control" type="text" required>

@@ -59,14 +59,14 @@ public class RESTController {
 
     @PostMapping("/tasks/{id}/sub/create")
     public SubTaskDTO addSubtask(@ModelAttribute @Valid SubTask subTask,@PathVariable("id") long id){
-        subTask.setTaskid(id);
+        subTask.setTask(DTOFormatter.DTOToTask(taskService.get(id)));
         subtaskService.add(DTOFormatter.createDTOfromSubtask(subTask));
         return DTOFormatter.createDTOfromSubtask(subTask);
     }
 
     @GetMapping("/tasks/{id}/sub/all")
     public List<SubTaskDTO> getSubtasks(@PathVariable("id") long id){
-        return subtaskService.getAll(id);
+        return subtaskService.getAll(DTOFormatter.DTOToTask(taskService.get(id)));
     }
 
 }

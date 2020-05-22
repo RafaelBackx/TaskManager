@@ -23,15 +23,15 @@ public class SubTaskService {
     @Autowired
     public SubTaskService(SubTaskRepository repository){
         this.repository = repository;
-        SubTask changeGet = new SubTask("get to post","change all faulty get to post request");
-        SubTask showSub = new SubTask("show SubTask","make a page to show subtasks, if you see this it means you can mark this task done");
-        SubTask validation = new SubTask("validation","add validation to each form");
-        validation.setTaskid(1);
-        changeGet.setTaskid(1);
-        showSub.setTaskid(1);
-        add(createDTOfromSubtask(changeGet));
-        add(createDTOfromSubtask(showSub));
-        add(createDTOfromSubtask(validation));
+//        SubTask changeGet = new SubTask("get to post","change all faulty get to post request");
+//        SubTask showSub = new SubTask("show SubTask","make a page to show subtasks, if you see this it means you can mark this task done");
+//        SubTask validation = new SubTask("validation","add validation to each form");
+//        validation.setTask(1);
+//        changeGet.setTaskid(1);
+//        showSub.setTaskid(1);
+//        add(createDTOfromSubtask(changeGet));
+//        add(createDTOfromSubtask(showSub));
+//        add(createDTOfromSubtask(validation));
     }
 
     public SubTaskDTO add(SubTaskDTO dto){
@@ -44,14 +44,12 @@ public class SubTaskService {
     }
 
     public void update(SubTaskDTO dto){
-        SubTask s = DTOFormatter.DTOToSubtask(dto);
-        System.out.println(s.getName() + s.getDescription() + s.getTaskid() + s.getId());
-        repository.update(s.getName(),s.getDescription(),s.getTaskid(),s.getId());
+        repository.update(dto.getName(),dto.getDescription(),dto.getTask(),dto.getId());
     }
 
-    public List<SubTaskDTO> getAll(long id){
+    public List<SubTaskDTO> getAll(Task task){
         List<SubTaskDTO> result = new ArrayList<>();
-        for (SubTask t : repository.getAllSubTaskByTaskid(id)){
+        for (SubTask t : repository.findByTask(task)){
             result.add(DTOFormatter.createDTOfromSubtask(t));
         }
         return result;

@@ -1,5 +1,8 @@
 package be.ucll.demo.Domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -21,7 +24,8 @@ public class Task {
     @NotNull(message = "description cannot be empty")
     @NotEmpty(message = "description cannot be empty")
     private String description;
-    @Transient
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SubTask> subtasks;
 
     public Task(String name, String description,LocalDateTime deadline) {
@@ -101,4 +105,6 @@ public class Task {
         }
         return false;
     }
+
+
 }

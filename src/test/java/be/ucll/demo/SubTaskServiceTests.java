@@ -33,12 +33,13 @@ public class SubTaskServiceTests {
         t.setSubtasks(null);
         service.add(DTOFormatter.createDTOfromTask(t));
         SubTask sub = new SubTask("test subtask for ci/cd","idk i dont want to test this");
-        sub.setTaskid(t.getId());
+        sub.setTask(t);
         subService.add(DTOFormatter.createDTOfromSubtask(sub));
     }
 
     @Test
     public void getSubtask(){
+        System.out.println("size: " + service.getAll().size());
         assertNotNull(service.getAll().get(0));
     }
 

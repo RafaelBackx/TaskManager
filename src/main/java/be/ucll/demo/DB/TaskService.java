@@ -34,14 +34,14 @@ public class TaskService {
     public TaskDTO get(long id){
         Optional<Task> optional = taskRepository.findById(id);
         TaskDTO t = DTOFormatter.createDTOfromTask(optional.orElseThrow(() -> new DbException("no task with id:"+ id +" found")));
-        t.setSubtasks(subTaskRepository.getAllSubTaskByTaskid(t.getId()));
+        t.setSubtasks(subTaskRepository.findByTask(DTOFormatter.DTOToTask(t)));
         return t;
     }
 
     public List<TaskDTO> getAll() {
         List<TaskDTO> result = new ArrayList<>();
         for (Task t:taskRepository.findAll()){
-            t.setSubtasks(subTaskRepository.getAllSubTaskByTaskid(t.getId()));
+            t.setSubtasks(subTaskRepository.findByTask(t));
             result.add(DTOFormatter.createDTOfromTask(t));
         }
         return result;
@@ -49,7 +49,7 @@ public class TaskService {
 
     public List<SubTaskDTO> getAll(long id){
         List<SubTaskDTO> result = new ArrayList<>();
-        for (SubTask t:subTaskRepository.getAllSubTaskByTaskid(id)){
+        for (SubTask t:subTaskRepository.findByTask(taskRepository.findById(id).get())){
             result.add(DTOFormatter.createDTOfromSubtask(t));
         }
         return result;
@@ -62,7 +62,6 @@ public class TaskService {
 
     public void delete(long id){
         taskRepository.deleteById(id);
-        subTaskRepository.removeAllByTaskid(id);
     }
 
     public TaskDTO update(TaskDTO dto){

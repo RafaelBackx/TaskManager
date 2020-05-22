@@ -1,8 +1,6 @@
 package be.ucll.demo.Domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -14,8 +12,9 @@ public class SubTask {
     @Id
     @GeneratedValue
     private long id;
-
-    private long taskid;
+    //private long taskid;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Task task;
     @NotNull(message = "Name cannot be emtpy")
     @NotEmpty(message = "Name cannot be empty")
     private String name;
@@ -58,11 +57,19 @@ public class SubTask {
         return this.name;
     }
 
-    public void setTaskid(long taskid){
-        this.taskid = taskid;
+    public void setTask(Task task){
+        this.task = task;
     }
 
-    public long getTaskid(){
-        return this.taskid;
+    public Task getTask(){
+        return this.task;
     }
+
+    //public void setTaskid(long taskid){
+       // this.taskid = taskid;
+    //}
+
+    //public long getTaskid(){
+      //  return this.taskid;
+    //}
 }

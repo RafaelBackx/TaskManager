@@ -1,11 +1,14 @@
 package be.ucll.demo.DTO;
 
+import be.ucll.demo.Domain.Task;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class SubTaskDTO {
     private long id;
-    private long taskid;
+    //private long taskid;
+    private Task task;
     @NotNull(message = "Name cannot be emtpy")
     @NotEmpty(message = "Name cannot be empty")
     private String name;
@@ -42,8 +45,8 @@ public class SubTaskDTO {
     }
 
 
-    public long getTaskid(){return this.taskid;}
+    public Task getTask(){return this.task;}
 
-    public void setTaskid(long taskid){this.taskid = taskid;}
+    public void setTask(Task task){this.task = task;}
 
 }

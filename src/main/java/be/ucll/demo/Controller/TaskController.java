@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static be.ucll.demo.Domain.DTOFormatter.DTOToTask;
 import static be.ucll.demo.Domain.DTOFormatter.createDTOfromSubtask;
 
 @Controller
@@ -35,18 +36,11 @@ public class TaskController {
 
     @GetMapping("/db")
     public String dbtest(){
-        // create default tasks
-        Task ipminor = new Task("finish ip minor","complete crud operation", LocalDateTime.of(2020,3,17,14,30));
-        SubTask changeGet = new SubTask("get to post","change all faulty get to post request");
-        SubTask showSub = new SubTask("show SubTask","make a page to show subtasks, if you see this it means you can mark this task done");
-        SubTask validation = new SubTask("validation","add validation to each form");
-        taskService.add(DTOFormatter.createDTOfromTask(ipminor));
-        validation.setTaskid(1);
-        changeGet.setTaskid(1);
-        showSub.setTaskid(1);
-        subTaskService.add(createDTOfromSubtask(changeGet));
-        subTaskService.add(createDTOfromSubtask(showSub));
-        subTaskService.add(createDTOfromSubtask(validation));
+        List<SubTaskDTO> subtasks = subTaskService.getAll();
+        System.out.println(subtasks.size());
+        for (SubTaskDTO dto : subtasks){
+            System.out.println(dto);
+        }
         return "db";
     }
 
@@ -67,7 +61,7 @@ public class TaskController {
         model.addAttribute("tasks",tasks);
         for (Task t : tasks){
             List<SubTask> subTaskList = new ArrayList<>();
-            for (SubTaskDTO dto :subTaskService.getAll(t.getId())){
+            for (SubTaskDTO dto :subTaskService.getAll(t)){
                 subTaskList.add(DTOFormatter.DTOToSubtask(dto));
             }
             if(subTaskList.size()>0)
@@ -89,7 +83,7 @@ public class TaskController {
     @GetMapping("/tasks/{id}")
     public String getTaskById(Model model, @PathVariable("id") long id){
         model.addAttribute("task", taskService.get(id));
-        model.addAttribute("subtasks", subTaskService.getAll(id));
+        model.addAttribute("subtasks", subTaskService.getAll(DTOToTask(taskService.get(id))));
         return "/task";
     }
 
@@ -142,7 +136,7 @@ public class TaskController {
             model.addAttribute("task",taskService.get(id));
             return "addsubtask";
         }
-        subTask.setTaskid(id);
+        subTask.setTask(DTOFormatter.DTOToTask(taskService.get(id)));
         subTaskService.add(subTask);
         return "redirect:/tasks/"+id;
     }
@@ -168,10 +162,14 @@ public class TaskController {
     }
 
     @PostMapping("/tasks/{id}/sub/edit/{subtaskid}")
-    public String editSubTask(@ModelAttribute SubTask subtask,@PathVariable("subtaskid")long subtaskid, @PathVariable("id") long taskid){
-        subtask.setTaskid(taskid);
+    public String editSubTask(@ModelAttribute("subtask") @Valid SubTaskDTO subtask, BindingResult bindingResult ,@PathVariable("subtaskid")long subtaskid, @PathVariable("id") long taskid, Model model){
+        if (bindingResult.hasErrors()){
+            model.addAttribute("task",taskService.get(taskid));
+            return "editSubtask";
+        }
+        subtask.setTask(DTOFormatter.DTOToTask(taskService.get(taskid)));
         subtask.setId(subtaskid);
-        subTaskService.update(createDTOfromSubtask(subtask));
+        subTaskService.update(subtask);
         return "redirect:/tasks";
     }
 }
