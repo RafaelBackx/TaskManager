@@ -45,8 +45,8 @@ public class SubTaskService {
 
     public void update(SubTaskDTO dto){
         SubTask s = DTOFormatter.DTOToSubtask(dto);
-        System.out.println(s.getName() + s.getDescription() + s.isCompleted() + s.getTaskid() + s.getId());
-        repository.update(s.getName(),s.getDescription(),s.isCompleted(),s.getTaskid(),s.getId());
+        System.out.println(s.getName() + s.getDescription() + s.getTaskid() + s.getId());
+        repository.update(s.getName(),s.getDescription(),s.getTaskid(),s.getId());
     }
 
     public List<SubTaskDTO> getAll(long id){

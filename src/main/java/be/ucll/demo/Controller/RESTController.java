@@ -48,7 +48,6 @@ public class RESTController {
         dto.setName(t.getName());
         dto.setDescription(t.getDescription());
         dto.setDeadline(t.getDeadline());
-        dto.setCompleted(t.isCompleted());
         dto = taskService.update(dto);
         List<SubTask> result = new ArrayList<>();
         for (SubTaskDTO sub : taskService.getAll(t.getId())){

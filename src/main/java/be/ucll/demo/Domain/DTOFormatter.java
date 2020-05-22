@@ -13,7 +13,6 @@ public class DTOFormatter {
         subTask.setTaskid(dto.getTaskid());
         subTask.setName(dto.getName());
         subTask.setDescription(dto.getDescription());
-        subTask.setCompleted(dto.isCompleted());
         return subTask;
     }
 
@@ -37,7 +36,6 @@ public class DTOFormatter {
         dto.setDescription(subTask.getDescription());
         dto.setName(subTask.getName());
         dto.setTaskid(subTask.getTaskid());
-        dto.setCompleted(subTask.isCompleted());
         return dto;
     }
 
@@ -49,7 +47,6 @@ public class DTOFormatter {
         dto.setDescription(task.getDescription());
         dto.setName(task.getName());
         dto.setDeadline(task.getDeadline());
-        dto.setCompleted(task.isCompleted());
         dto.setSubtasks(task.getSubtasks());
         return dto;
     }

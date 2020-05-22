@@ -30,7 +30,6 @@ public class SubTaskServiceTests {
         t.setName("test");
         t.setDescription("test task1 for ci/cd");
         t.setDeadline(LocalDateTime.now());
-        t.setCompleted(false);
         t.setSubtasks(null);
         service.add(DTOFormatter.createDTOfromTask(t));
         SubTask sub = new SubTask("test subtask for ci/cd","idk i dont want to test this");

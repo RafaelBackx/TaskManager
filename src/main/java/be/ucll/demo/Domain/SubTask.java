@@ -22,7 +22,6 @@ public class SubTask {
     @NotNull(message = "description cannot be empty")
     @NotEmpty(message = "description cannot be empty")
     private String description;
-    private boolean completed = false;
 
     public SubTask(String name, String description) {
         this.name = name;
@@ -57,14 +56,6 @@ public class SubTask {
 
     public String toString(){
         return this.name;
-    }
-
-    public boolean isCompleted(){
-        return this.completed;
-    }
-
-    public void setCompleted(boolean completed){
-        this.completed = completed;
     }
 
     public void setTaskid(long taskid){

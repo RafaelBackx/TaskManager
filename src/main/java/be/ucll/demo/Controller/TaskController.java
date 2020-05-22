@@ -113,14 +113,13 @@ public class TaskController {
         dto.setName(getTask.getName());
         dto.setDescription(getTask.getDescription());
         dto.setDeadline(getTask.getDeadline());
-        dto.setCompleted(getTask.isCompleted());
         dto.setSubtasks(getTask.getSubtasks());
         model.addAttribute("task", dto);
         return "editTask";
     }
 
     @PostMapping("/tasks/edit/{id}")
-    public String edit(@ModelAttribute("task") @Valid TaskDTO task, @PathVariable("id") long id, BindingResult bindingResult){
+    public String edit(@ModelAttribute("task") @Valid TaskDTO task, BindingResult bindingResult, @PathVariable("id") long id){
         if (bindingResult.hasErrors()){
             return "editTask";
         }
@@ -133,14 +132,18 @@ public class TaskController {
     @GetMapping("/tasks/{id}/sub/create")
     public String goToSubTask(@PathVariable("id") long id,Model model){
         model.addAttribute("task", taskService.get(id));
+        model.addAttribute("subtask",new SubTaskDTO());
         return "addsubtask";
     }
 
     @PostMapping("/tasks/{id}/sub/create")
-    public String addSubTask(@ModelAttribute SubTask subTask, @PathVariable("id") long id){
+    public String addSubTask(@ModelAttribute("subtask") @Valid SubTaskDTO subTask, BindingResult bindingResult, @PathVariable("id") long id, Model model){
+        if (bindingResult.hasErrors()){
+            model.addAttribute("task",taskService.get(id));
+            return "addsubtask";
+        }
         subTask.setTaskid(id);
-        subTaskService.add(createDTOfromSubtask(subTask));
-        System.out.println("subtask taskid:" + subTaskService.getAll().get(0).getTaskid());
+        subTaskService.add(subTask);
         return "redirect:/tasks/"+id;
     }
 
@@ -150,27 +153,11 @@ public class TaskController {
         return "redirect:/tasks";
     }
 
-    @PostMapping("/tasks/sub/{subtaskid}/accept")
-    public String completeSubtask(@PathVariable("subtaskid") long subtaskid){
-        SubTask subTask = DTOFormatter.DTOToSubtask(subTaskService.get(subtaskid));
-        subTask.setCompleted(!subTask.isCompleted());
-        subTaskService.update(DTOFormatter.createDTOfromSubtask(subTask));
-        return "redirect:/tasks";
-    }
-
     @GetMapping("/tasks/{id}/sub/{subtaskid}")
     public String getSubTask(@PathVariable("subtaskid") long subtaskid, Model model,@PathVariable("id") long id){
         model.addAttribute("subtask",subTaskService.get(subtaskid));
         model.addAttribute("task",taskService.get(id));
         return "subtask";
-    }
-
-    @PostMapping("/tasks/{id}/accept")
-    public String changeState(@PathVariable("id") long id){
-        Task t = DTOFormatter.DTOToTask(taskService.get(id));
-        t.setCompleted(!t.isCompleted());
-        taskService.update(DTOFormatter.createDTOfromTask(t));
-        return "redirect:/tasks";
     }
 
     @GetMapping("/tasks/{id}/sub/edit/{subtaskid}")

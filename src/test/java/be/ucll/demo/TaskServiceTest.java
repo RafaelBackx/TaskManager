@@ -28,7 +28,6 @@ public class TaskServiceTest {
         t.setName("test");
         t.setDescription("test task1 for ci/cd");
         t.setDeadline(LocalDateTime.now());
-        t.setCompleted(false);
         t.setSubtasks(null);
         service.add(DTOFormatter.createDTOfromTask(t));
     }
@@ -74,7 +73,6 @@ public class TaskServiceTest {
         subtask.setTaskid(t.getId());
         subtask.setName("subtast test");
         subtask.setDescription("subtast description");
-        subtask.setCompleted(false);
         subService.add(DTOFormatter.createDTOfromSubtask(subtask));
         //assert
         assertEquals(1,service.getAll(t.getId()).size());

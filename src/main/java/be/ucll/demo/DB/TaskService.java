@@ -66,7 +66,8 @@ public class TaskService {
     }
 
     public TaskDTO update(TaskDTO dto){
-        taskRepository.updateTask(dto.getName(),dto.getDeadline(),dto.getDescription(),dto.isCompleted());
+        Task t = DTOFormatter.DTOToTask(dto);
+        taskRepository.updateTask(t.getName(),t.getDeadline(),t.getDescription());
         return dto;
     }
 }

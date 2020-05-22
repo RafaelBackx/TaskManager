@@ -12,7 +12,6 @@ public class SubTaskDTO {
     @NotNull(message = "description cannot be empty")
     @NotEmpty(message = "description cannot be empty")
     private String description;
-    private boolean completed = false;
 
     public void setName(String name) {
         this.name = name;
@@ -42,13 +41,6 @@ public class SubTaskDTO {
         return this.name;
     }
 
-    public boolean isCompleted(){
-        return this.completed;
-    }
-
-    public void setCompleted(boolean completed){
-        this.completed = completed;
-    }
 
     public long getTaskid(){return this.taskid;}
 

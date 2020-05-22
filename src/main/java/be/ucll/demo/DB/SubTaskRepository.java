@@ -21,6 +21,6 @@ public interface SubTaskRepository extends JpaRepository<SubTask,Long>{
     void removeAllByTaskid(long taskid);
     @Modifying
     @Transactional
-    @Query("update SubTask s set s.name=?1,s.description=?2,s.completed=?3,s.taskid=?4 where s.id = ?5")
-    void update (String name,String description,boolean completed,long taskid,long id);
+    @Query("update SubTask s set s.name=?1,s.description=?2,s.taskid=?3 where s.id = ?4")
+    void update (String name,String description,long taskid,long id);
 }

@@ -23,15 +23,12 @@
     <h1 class="pl-2" th:text="#{Tasks}"></h1>
     <ul id="taskList" class="list-group p-2">
         <div th:each="task : ${tasks}">
-            <li class="supperTask list-group-item d-flex justify-content-between mt-3" th:classappend="${task.isCompleted()} ? list-group-item-success">
+            <li class="supperTask list-group-item d-flex justify-content-between mt-3">
                 <a th:href="${'/tasks/' + task.id}" th:text="${task.toString()}"></a>
                 <div class="d-flex justify-content-end">
                     <button class="button dropdownButton"><i class="far fa-arrow-alt-circle-down"></i></button>
                     <form method="post" th:action="${'/remove/' + task.id}">
                         <button type="submit" class="button"><i class="far fa-times-circle"></i></button>
-                    </form>
-                    <form method="post" th:action="${'/tasks/'+task.id+'/accept'}">
-                        <button type="submit" class="button"><i class="far fa-check-circle"></i></button>
                     </form>
 <!--                    <a th:href="${'/remove/' + task.id}"><i class="far fa-times-circle"></i></a>-->
 <!--                    <a th:href="${'/tasks/'+task.id+'/accept'}"><i class="far fa-check-circle"></i></a>-->
@@ -39,16 +36,13 @@
             </li>
             <ul class="list-group pl-2 d-none dropdown">
                 <div th:each="subtask : ${subtasks.get(task.id)}">
-                    <li class="list-group-item  d-flex justify-content-between mt-1 ml-3" th:classappend="${subtask.isCompleted()} ? list-group-item-success" >
+                    <li class="list-group-item  d-flex justify-content-between mt-1 ml-3">
                         <a th:href="${'/tasks/'+task.id+'/sub/' + subtask.id}" th:text="${subtask.toString()}"></a>
                         <div class="d-flex justify-content-end">
                             <form method="post" th:action="${'/tasks/sub/remove/' + subtask.id}">
                                 <button class="button" type="submit"><i class="far fa-times-circle"></i></button>
                             </form>
     <!--                        <a th:href="${'/tasks/sub/remove/' + subtask.id}"><i class="far fa-times-circle"></i></a>-->
-                            <form method="post" th:action="${'/tasks/sub/' + subtask.id + '/accept'}">
-                                <button class="button" type="submit"><i class="far fa-check-circle"></i></button>
-                            </form>
     <!--                        <a href="/tasks"><i class="far fa-check-circle"></i></a>-->
                         </div>
                     </li>

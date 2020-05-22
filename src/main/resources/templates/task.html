@@ -25,9 +25,6 @@
         <form method="post" th:action="${'/remove/' + task.id}">
             <button type="submit" class="button"><i class="far fa-times-circle"></i></button>
         </form>
-        <form method="post" th:action="${'/tasks/'+task.id+'/accept'}">
-            <button type="submit" class="button"><i class="far fa-check-circle"></i></button>
-        </form>
         <a th:href="${'/tasks/edit/' + task.id}"><button class="button"><i class="far fa-edit"></i></button></a>
         <a th:href="${'/tasks/'+task.id+'/sub/create'}"><button class="button"><i class="fas fa-plus-circle"></i></button></a>
     </div>
@@ -40,9 +37,6 @@
                     <button class="button" type="submit"><i class="far fa-times-circle"></i></button>
                 </form>
                 <!--                        <a th:href="${'/tasks/sub/remove/' + subtask.id}"><i class="far fa-times-circle"></i></a>-->
-                <form method="post" th:action="${'/tasks/sub/' + subtask.id + '/accept'}">
-                    <button class="button" type="submit"><i class="far fa-check-circle"></i></button>
-                </form>
                 <!--                        <a href="/tasks"><i class="far fa-check-circle"></i></a>-->
             </div>
         </li>

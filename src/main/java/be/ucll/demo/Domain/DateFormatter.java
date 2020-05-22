@@ -16,7 +16,6 @@ public class DateFormatter implements Formatter<LocalDateTime> {
 
     @Override
     public String print(LocalDateTime date, Locale locale) {
-        return "due at " + date.getMonth().toString() + " " + date.getDayOfWeek().toString() + " " + date.getYear();
-        //return date.format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        return date.format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 }

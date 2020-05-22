@@ -24,9 +24,6 @@
     <form method="post" th:action="${'/tasks/sub/remove/' + subtask.id}">
         <button type="submit" class="button"><i class="far fa-times-circle"></i></button>
     </form>
-    <form method="post" th:action="${'/tasks/sub/' + task.id + '/accept'}">
-        <button type="submit" class="button"><i class="far fa-check-circle"></i></button>
-    </form>
     <a th:href="${'/tasks/' + task.id + '/sub/edit/' + subtask.id}"><button class="button"><i class="far fa-edit"></i></button></a>
 </div>
 <p class="p-2" th:text="${subtask.description}"></p>

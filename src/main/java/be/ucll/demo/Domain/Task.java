@@ -21,7 +21,6 @@ public class Task {
     @NotNull(message = "description cannot be empty")
     @NotEmpty(message = "description cannot be empty")
     private String description;
-    private boolean completed = false;
     @Transient
     private List<SubTask> subtasks;
 
@@ -90,14 +89,6 @@ public class Task {
         return this.subtasks;
     }
 
-    public boolean isCompleted(){
-        return this.completed;
-    }
-
-    public void setCompleted(boolean completed){
-        this.completed = completed;
-    }
-
     public void setSubtasks(List<SubTask> subtasks){
         this.subtasks = subtasks;
     }
@@ -106,7 +97,7 @@ public class Task {
     public boolean equals(Object t){
         if (t instanceof Task){
             Task obj = (Task) t;
-            return obj.getId() == this.id && obj.getName().equalsIgnoreCase(this.name) && obj.getDescription().equalsIgnoreCase(this.description) && obj.getDeadline().equals(this.deadline) && obj.isCompleted() == this.isCompleted();
+            return obj.getId() == this.id && obj.getName().equalsIgnoreCase(this.name) && obj.getDescription().equalsIgnoreCase(this.description) && obj.getDeadline().equals(this.deadline);
         }
         return false;
     }
