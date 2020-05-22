@@ -1,5 +1,8 @@
 package be.ucll.demo.Domain;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -14,6 +17,7 @@ public class SubTask {
     private long id;
     //private long taskid;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Task task;
     @NotNull(message = "Name cannot be emtpy")
     @NotEmpty(message = "Name cannot be empty")

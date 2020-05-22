@@ -25,7 +25,6 @@ public class Task {
     @NotEmpty(message = "description cannot be empty")
     private String description;
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SubTask> subtasks;
 
     public Task(String name, String description,LocalDateTime deadline) {
