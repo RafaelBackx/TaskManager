@@ -24,7 +24,7 @@ public class Task {
     @NotNull(message = "description cannot be empty")
     @NotEmpty(message = "description cannot be empty")
     private String description;
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<SubTask> subtasks;
 
     public Task(String name, String description,LocalDateTime deadline) {

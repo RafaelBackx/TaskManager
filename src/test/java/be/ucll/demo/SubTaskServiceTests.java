@@ -39,7 +39,6 @@ public class SubTaskServiceTests {
 
     @Test
     public void getSubtask(){
-        System.out.println("size: " + service.getAll().size());
         assertNotNull(service.getAll().get(0));
     }
 

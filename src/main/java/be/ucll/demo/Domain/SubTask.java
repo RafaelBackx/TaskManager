@@ -18,6 +18,7 @@ public class SubTask {
     //private long taskid;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(nullable = false)
     private Task task;
     @NotNull(message = "Name cannot be emtpy")
     @NotEmpty(message = "Name cannot be empty")
