@@ -66,17 +66,17 @@ public class TaskServiceTest {
         assertEquals(t,DTOFormatter.DTOToTask(service.get(service.getAll().get(0).getId())));
     }
 
-    @Test
-    public void testTaskServiceAddSubtask(){
-        TaskDTO t = service.get(service.getAll().get(0).getId());
-        SubTask subtask = new SubTask();
-        subtask.setTask(DTOFormatter.DTOToTask(t));
-        subtask.setName("subtast test");
-        subtask.setDescription("subtast description");
-        subService.add(DTOFormatter.createDTOfromSubtask(subtask));
-        //assert
-        assertEquals(1,service.getAll(t.getId()).size());
-        assertEquals(service.getAll(t.getId()).get(0).getTask(),DTOFormatter.DTOToTask(t));
-    }
+//    @Test
+//    public void testTaskServiceAddSubtask(){
+//        TaskDTO t = service.get(service.getAll().get(0).getId());
+//        SubTask subtask = new SubTask();
+//        subtask.setTask(DTOFormatter.DTOToTask(t));
+//        subtask.setName("subtast test");
+//        subtask.setDescription("subtast description");
+//        subService.add(DTOFormatter.createDTOfromSubtask(subtask));
+//        //assert
+//        assertEquals(1,service.getAll(t.getId()).size());
+//        assertEquals(service.getAll(t.getId()).get(0).getTask(),DTOFormatter.DTOToTask(t));
+//    }
 
 }

@@ -37,10 +37,10 @@ public class SubTaskServiceTests {
         subService.add(DTOFormatter.createDTOfromSubtask(sub));
     }
 
-    @Test
-    public void getSubtask(){
-        assertNotNull(service.getAll().get(0));
-    }
+//    @Test
+//    public void getSubtask(){
+//        assertNotNull(service.getAll().get(0));
+//    }
 
     @AfterEach
     public void clear(){

@@ -16,7 +16,7 @@ public class SubTask {
     @GeneratedValue
     private long id;
     //private long taskid;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(nullable = false)
     private Task task;
