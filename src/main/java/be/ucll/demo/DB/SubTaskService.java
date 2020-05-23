@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static be.ucll.demo.Domain.DTOFormatter.DTOToSubtask;
 import static be.ucll.demo.Domain.DTOFormatter.createDTOfromSubtask;
 
 @Service
@@ -35,7 +36,7 @@ public class SubTaskService {
     }
 
     public SubTaskDTO add(SubTaskDTO dto){
-        repository.save(DTOFormatter.DTOToSubtask(dto));
+        repository.save(DTOToSubtask(dto));
         return dto;
     }
 
@@ -50,7 +51,8 @@ public class SubTaskService {
     public List<SubTaskDTO> getAll(Task task){
         List<SubTaskDTO> result = new ArrayList<>();
         for (SubTask t : repository.findByTask(task)){
-            result.add(DTOFormatter.createDTOfromSubtask(t));
+            t.setTask(null);
+            result.add(createDTOfromSubtask(t));
         }
         return result;
     }
@@ -58,14 +60,14 @@ public class SubTaskService {
     public List<SubTaskDTO> getAll(){
         List<SubTaskDTO> result = new ArrayList<>();
         for (SubTask t : repository.findAll()){
-            result.add(DTOFormatter.createDTOfromSubtask(t));
+            result.add(createDTOfromSubtask(t));
         }
         return result;
     }
 
     public SubTaskDTO get(long  id){
         Optional<SubTask> optionalSubTask = repository.findById(id);
-        return DTOFormatter.createDTOfromSubtask(optionalSubTask.orElseThrow(() -> new DbException("subtask not found")));
+        return createDTOfromSubtask(optionalSubTask.orElseThrow(() -> new DbException("subtask not found")));
     }
 
 }

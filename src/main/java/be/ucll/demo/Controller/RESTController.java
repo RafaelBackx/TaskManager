@@ -13,6 +13,8 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+import static be.ucll.demo.Domain.DTOFormatter.*;
+
 @RestController
 @RequestMapping("/api")
 public class RESTController {
@@ -26,8 +28,14 @@ public class RESTController {
 
     @GetMapping("/tasks/all")
     @ResponseBody
-    public List<TaskDTO> getAll(){
-        return taskService.getAll();
+    public List<TaskDTO> getAll() {
+        List<TaskDTO> result = taskService.getAll();
+        for (TaskDTO t: result){
+            for (SubTask s: t.getSubtasks()){
+                s.setTask(null);
+            }
+        }
+        return result;
     }
 
     @GetMapping("/tasks/{id}")
@@ -36,14 +44,13 @@ public class RESTController {
     }
 
     @PostMapping("/tasks/add")
-    public TaskDTO addTask(@ModelAttribute @Valid Task t){
-        TaskDTO dto = DTOFormatter.createDTOfromTask(t);
-        taskService.add(dto);
-        return dto;
+    public TaskDTO addTask(@ModelAttribute @Valid TaskDTO t){
+        taskService.add(t);
+        return t;
     }
 
     @PostMapping("/tasks/edit/{id}")
-    public TaskDTO editTask(@PathVariable("id") long id, @ModelAttribute @Valid Task t){
+    public TaskDTO editTask(@PathVariable("id") long id, @ModelAttribute @Valid TaskDTO t){
         TaskDTO dto = taskService.get(id);
         dto.setName(t.getName());
         dto.setDescription(t.getDescription());
@@ -51,22 +58,30 @@ public class RESTController {
         dto = taskService.update(dto);
         List<SubTask> result = new ArrayList<>();
         for (SubTaskDTO sub : taskService.getAll(t.getId())){
-            result.add(DTOFormatter.DTOToSubtask(sub));
+            result.add(DTOToSubtask(sub));
         }
         dto.setSubtasks(result);
         return dto;
     }
 
     @PostMapping("/tasks/{id}/sub/create")
-    public SubTaskDTO addSubtask(@ModelAttribute @Valid SubTask subTask,@PathVariable("id") long id){
-        subTask.setTask(DTOFormatter.DTOToTask(taskService.get(id)));
-        subtaskService.add(DTOFormatter.createDTOfromSubtask(subTask));
-        return DTOFormatter.createDTOfromSubtask(subTask);
+    public SubTaskDTO addSubtask(@ModelAttribute @Valid SubTaskDTO subTask,@PathVariable("id") long id){
+        TaskDTO taskDTO = taskService.get(id);
+        subTask.setTask(null);
+        subtaskService.add(subTask);
+        System.out.println("slkfjqsdlkf");
+        return subTask;
     }
 
     @GetMapping("/tasks/{id}/sub/all")
     public List<SubTaskDTO> getSubtasks(@PathVariable("id") long id){
-        return subtaskService.getAll(DTOFormatter.DTOToTask(taskService.get(id)));
+        TaskDTO dto = taskService.get(id);
+        Task t = new Task();
+        t.setId(dto.getId());
+        t.setDescription(dto.getDescription());
+        t.setName(dto.getName());
+        t.setDeadline(dto.getDeadline());
+        List<SubTaskDTO> result = subtaskService.getAll(t);
+        return result;
     }
-
 }

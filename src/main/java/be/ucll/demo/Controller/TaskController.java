@@ -71,7 +71,7 @@ public class TaskController {
         return "tasks";
     }
 
-    @PostMapping("/tasks")
+    @PostMapping("/add")
     public String addTask(@ModelAttribute("task") @Valid TaskDTO task, BindingResult binding){
         if (binding.hasErrors()){
             return "add";

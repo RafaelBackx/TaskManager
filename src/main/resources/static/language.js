@@ -1,5 +1,5 @@
 let div = document.getElementById('language');
-let options = Array.from(div.querySelectorAll('a'));
+let options = Array.from(div.querySelectorAll('button'));
 
 options.forEach(element => element.addEventListener('click',changeLanguage,false));
 

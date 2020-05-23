@@ -1,6 +1,7 @@
 package be.ucll.demo.DTO;
 
 import be.ucll.demo.Domain.Task;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotNull;
 public class SubTaskDTO {
     private long id;
     //private long taskid;
+    @JsonIgnore
     private Task task;
     @NotNull(message = "Name cannot be emtpy")
     @NotEmpty(message = "Name cannot be empty")
