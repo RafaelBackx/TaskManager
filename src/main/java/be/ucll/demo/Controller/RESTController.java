@@ -29,13 +29,13 @@ public class RESTController {
     @GetMapping("/tasks/all")
     @ResponseBody
     public List<TaskDTO> getAll() {
-        List<TaskDTO> result = taskService.getAll();
-        for (TaskDTO t: result){
-            for (SubTask s: t.getSubtasks()){
-                s.setTask(null);
-            }
-        }
-        return result;
+//        List<TaskDTO> result = taskService.getAll();
+//        for (TaskDTO t: result){
+//            for (SubTask s: t.getSubtasks()){
+//                s.setTask(null);
+//            }
+//        }
+        return taskService.getAll();
     }
 
     @GetMapping("/tasks/{id}")
@@ -66,8 +66,7 @@ public class RESTController {
 
     @PostMapping("/tasks/{id}/sub/create")
     public SubTaskDTO addSubtask(@ModelAttribute @Valid SubTaskDTO subTask,@PathVariable("id") long id){
-        TaskDTO taskDTO = taskService.get(id);
-        subTask.setTask(null);
+        subTask.setTask(DTOToTask(taskService.get(id)));
         subtaskService.add(subTask);
         System.out.println("slkfjqsdlkf");
         return subTask;
@@ -75,13 +74,7 @@ public class RESTController {
 
     @GetMapping("/tasks/{id}/sub/all")
     public List<SubTaskDTO> getSubtasks(@PathVariable("id") long id){
-        TaskDTO dto = taskService.get(id);
-        Task t = new Task();
-        t.setId(dto.getId());
-        t.setDescription(dto.getDescription());
-        t.setName(dto.getName());
-        t.setDeadline(dto.getDeadline());
-        List<SubTaskDTO> result = subtaskService.getAll(t);
-        return result;
+        Task t = DTOToTask(taskService.get(id));
+        return subtaskService.getAll(t);
     }
 }

@@ -35,10 +35,14 @@ public class UserServiceImplementatie implements UserService {
         User user = new User();
         user.setName(createUserDTO.getName());
         user.setPassword(this.passwordEncoder.encode(createUserDTO.getPassword()));
-        user.setEmail(createUserDTO.getEmail());
         user.setRole(createUserDTO.getRole());
         user = repo.save(user);
         return convert(user);
+    }
+
+    @Override
+    public void deleteUser(long id) {
+        repo.deleteById(id);
     }
 
     @Override
@@ -50,7 +54,6 @@ public class UserServiceImplementatie implements UserService {
         UserDTO dto = new UserDTO();
         dto.setId(user.getId());
         dto.setName(user.getName());
-        dto.setEmail(user.getEmail());
         dto.setRole(user.getRole());
         return dto;
     }

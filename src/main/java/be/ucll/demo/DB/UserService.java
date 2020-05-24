@@ -10,5 +10,7 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     UserDTO createUser(CreateUserDTO user);
 
+    void deleteUser(long id);
+
     List<User> getAll();
 }

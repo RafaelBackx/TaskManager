@@ -2,6 +2,7 @@ package be.ucll.demo;
 
 import be.ucll.demo.DB.SubTaskService;
 import be.ucll.demo.DB.TaskService;
+import be.ucll.demo.DTO.SubTaskDTO;
 import be.ucll.demo.DTO.TaskDTO;
 import be.ucll.demo.Domain.DTOFormatter;
 import be.ucll.demo.Domain.SubTask;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,15 +34,42 @@ public class SubTaskServiceTests {
         t.setDeadline(LocalDateTime.now());
         t.setSubtasks(null);
         service.add(DTOFormatter.createDTOfromTask(t));
+        TaskDTO taskDTO = service.getAll().get(0);
         SubTask sub = new SubTask("test subtask for ci/cd","idk i dont want to test this");
-        sub.setTask(t);
+        sub.setTask(DTOFormatter.DTOToTask(taskDTO));
         subService.add(DTOFormatter.createDTOfromSubtask(sub));
     }
 
-//    @Test
-//    public void getSubtask(){
-//        assertNotNull(service.getAll().get(0));
-//    }
+    @Test
+    public void subtaskTest(){
+        assertNotNull(service.getAll().get(0).getSubtasks().get(0));
+    }
+
+    @Test
+    public void getSubtaskMainTask(){
+        assertNotNull(service.getAll().get(0).getSubtasks().get(0).getTask());
+    }
+
+    @Test
+    public void testSubtaskDelete(){
+        assertNotNull(subService.getAll().get(0));
+        long id = subService.getAll().get(0).getId();
+        subService.delete(id);
+        assertEquals(0,subService.getAll().size());
+    }
+
+    @Test
+    public void testSubtaskEdit(){
+        assertNotNull(subService.getAll().get(0));
+        long id = subService.getAll().get(0).getId();
+        SubTaskDTO dto = subService.get(id);
+        dto.setName("edit task test");
+        dto.setDescription("edit task test description");
+        subService.update(dto);
+        SubTaskDTO dtoAfterUpdate = subService.get(id);
+        assertEquals(dtoAfterUpdate.getName(), "edit task test");
+        assertEquals(dtoAfterUpdate.getDescription(), "edit task test description");
+    }
 
     @AfterEach
     public void clear(){
