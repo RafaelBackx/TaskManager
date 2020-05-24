@@ -27,8 +27,8 @@ public class TaskService {
         this.taskRepository = taskRepository;
         this.subTaskRepository = subTaskRepository;
 
-        Task ipminor = new Task("finish ip minor","complete crud operation", LocalDateTime.of(2020,3,17,14,30));
-        add(DTOFormatter.createDTOfromTask(ipminor));
+//        Task ipminor = new Task("finish ip minor","complete crud operation", LocalDateTime.of(2020,3,17,14,30));
+//        add(DTOFormatter.createDTOfromTask(ipminor));
     }
 
     public TaskDTO get(long id){
