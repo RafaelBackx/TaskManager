@@ -18,31 +18,41 @@ public class UserServiceImplementatie implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserServiceImplementatie(UserRepository repo, PasswordEncoder encoder){
+
         this.repo = repo;
         this.passwordEncoder = encoder;
+
     }
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+
         User user = repo.findByName(s);
-        if (user == null) {
+
+        if (user == null)
+        {
             throw new UsernameNotFoundException("User does not exist");
         }
+
         return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name())));
     }
 
     @Override
     public UserDTO createUser(CreateUserDTO createUserDTO) {
+
         User user = new User();
         user.setName(createUserDTO.getName());
         user.setPassword(this.passwordEncoder.encode(createUserDTO.getPassword()));
         user.setRole(createUserDTO.getRole());
         user = repo.save(user);
         return convert(user);
+
     }
 
     @Override
     public void deleteUser(long id) {
+
         repo.deleteById(id);
+
     }
 
     @Override
@@ -51,10 +61,13 @@ public class UserServiceImplementatie implements UserService {
     }
 
     public UserDTO convert(User user){
+
         UserDTO dto = new UserDTO();
         dto.setId(user.getId());
         dto.setName(user.getName());
         dto.setRole(user.getRole());
         return dto;
+
     }
+
 }

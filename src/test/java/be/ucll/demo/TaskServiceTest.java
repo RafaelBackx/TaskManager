@@ -41,6 +41,24 @@ public class TaskServiceTest {
     }
 
     @Test
+    public void testTaskAdd(){
+        TaskDTO taskDTO = new TaskDTO();
+        taskDTO.setName("test add");
+        taskDTO.setDescription("test add description");
+        taskDTO.setDeadline(LocalDateTime.now());
+        taskDTO.setSubtasks(null);
+        this.service.add(taskDTO);
+        for (TaskDTO t:this.service.getAll()){
+            if (DTOFormatter.DTOToTask(t).equals(DTOFormatter.DTOToTask(taskDTO))){
+                assertEquals(t.getName(),taskDTO.getName());
+                assertEquals(t.getDescription(),taskDTO.getDescription());
+                assertEquals(t.getDeadline(),taskDTO.getDeadline());
+                assertEquals(t.getSubtasks(),taskDTO.getSubtasks());
+            }
+        }
+    }
+
+    @Test
     public void testTaskServiceGetAll(){
         List<TaskDTO> tasks = service.getAll();
         assertNotNull(tasks);

@@ -41,14 +41,19 @@ public class TaskService {
     public List<TaskDTO> getAll() {
         List<TaskDTO> result = new ArrayList<>();
         for (Task t:taskRepository.findAll()){
+
             t.setSubtasks(subTaskRepository.findByTask(t));
             result.add(DTOFormatter.createDTOfromTask(t));
+
         }
+
         return result;
     }
 
     public List<SubTaskDTO> getAll(long id){
+
         List<SubTaskDTO> result = new ArrayList<>();
+
         for (SubTask t:subTaskRepository.findByTask(taskRepository.findById(id).get())){
             result.add(DTOFormatter.createDTOfromSubtask(t));
         }
@@ -56,17 +61,23 @@ public class TaskService {
     }
 
     public TaskDTO add(TaskDTO dto) {
+
         taskRepository.save(DTOFormatter.DTOToTask(dto));
         return dto;
+
     }
 
     public void delete(long id){
+
         taskRepository.deleteById(id);
+
     }
 
     public TaskDTO update(TaskDTO dto){
+
         Task t = DTOFormatter.DTOToTask(dto);
         taskRepository.updateTask(t.getName(),t.getDeadline(),t.getDescription(),t.getId());
         return dto;
+
     }
 }

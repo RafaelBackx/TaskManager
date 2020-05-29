@@ -34,16 +34,6 @@ public class TaskController {
         return "index";
     }
 
-    @GetMapping("/db")
-    public String dbtest(){
-        List<SubTaskDTO> subtasks = subTaskService.getAll();
-        System.out.println(subtasks.size());
-        for (SubTaskDTO dto : subtasks){
-            System.out.println(dto);
-        }
-        return "db";
-    }
-
     @GetMapping("/sub")
     public String getAllSubTasks(){
         System.out.println(subTaskService.getAll());

@@ -25,10 +25,11 @@ public class SubTaskServiceTests {
     private TaskService service;
     @Autowired
     private SubTaskService subService;
+    private Task t;
 
     @BeforeEach
     public void setup(){
-        Task t = new Task();
+        t = new Task();
         t.setName("test");
         t.setDescription("test task1 for ci/cd");
         t.setDeadline(LocalDateTime.now());
@@ -69,6 +70,14 @@ public class SubTaskServiceTests {
         SubTaskDTO dtoAfterUpdate = subService.get(id);
         assertEquals(dtoAfterUpdate.getName(), "edit task test");
         assertEquals(dtoAfterUpdate.getDescription(), "edit task test description");
+    }
+
+    @Test
+    public void testGetAllFromSpecificTask(){
+        TaskDTO dto = this.service.getAll().get(0);
+        Task t = DTOFormatter.DTOToTask(dto);
+        List<SubTaskDTO> subtasks = this.subService.getAll(t);
+        assertEquals(subtasks.size(),1);
     }
 
     @AfterEach

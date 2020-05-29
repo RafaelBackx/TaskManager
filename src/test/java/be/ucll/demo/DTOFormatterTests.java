@@ -5,10 +5,7 @@ import be.ucll.demo.DB.UserServiceImplementatie;
 import be.ucll.demo.DTO.SubTaskDTO;
 import be.ucll.demo.DTO.TaskDTO;
 import be.ucll.demo.DTO.UserDTO;
-import be.ucll.demo.Domain.Role;
-import be.ucll.demo.Domain.SubTask;
-import be.ucll.demo.Domain.Task;
-import be.ucll.demo.Domain.User;
+import be.ucll.demo.Domain.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +88,23 @@ public class DTOFormatterTests {
         assertEquals(user.getId(),userDTO.getId());
         assertEquals(user.getName(),userDTO.getName());
         assertEquals(user.getRole(),userDTO.getRole());
+    }
+
+    @Test
+    public void testSubtaskListFormat(){
+        SubTaskDTO dto = new SubTaskDTO();
+        dto.setName("subtask test");
+        dto.setDescription("subtask description test");
+        SubTaskDTO dto2 = new SubTaskDTO();
+        dto2.setName("subtask test");
+        dto2.setDescription("subtask description test");
+        List<SubTaskDTO> subTaskDTOList = new ArrayList<>();
+        subTaskDTOList.add(dto);
+        subTaskDTOList.add(dto2);
+        List<SubTask> subtask = DTOFormatter.formatToList(subTaskDTOList);
+        assertEquals(subtask.get(0).getName(),dto.getName());
+        assertEquals(subtask.get(0).getDescription(),dto.getDescription());
+        assertEquals(subtask.get(1).getName(),dto2.getName());
+        assertEquals(subtask.get(1).getDescription(),dto2.getDescription());
     }
 }

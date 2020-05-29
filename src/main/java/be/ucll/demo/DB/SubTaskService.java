@@ -36,12 +36,16 @@ public class SubTaskService {
     }
 
     public SubTaskDTO add(SubTaskDTO dto){
+
         repository.save(DTOToSubtask(dto));
         return dto;
+
     }
 
     public void delete(long id){
+
         repository.deleteById(id);
+
     }
 
     public void update(SubTaskDTO dto){
@@ -49,25 +53,31 @@ public class SubTaskService {
     }
 
     public List<SubTaskDTO> getAll(Task task){
+
         List<SubTaskDTO> result = new ArrayList<>();
         for (SubTask t : repository.findByTask(task)){
             t.setTask(null);
             result.add(createDTOfromSubtask(t));
         }
         return result;
+
     }
 
     public List<SubTaskDTO> getAll(){
+
         List<SubTaskDTO> result = new ArrayList<>();
         for (SubTask t : repository.findAll()){
             result.add(createDTOfromSubtask(t));
         }
         return result;
+
     }
 
     public SubTaskDTO get(long  id){
+
         Optional<SubTask> optionalSubTask = repository.findById(id);
         return createDTOfromSubtask(optionalSubTask.orElseThrow(() -> new DbException("subtask not found")));
+
     }
 
 }

@@ -2,9 +2,7 @@ package be.ucll.demo.Domain;
 
 public enum Role {
     ADMIN("ADMIN"),
-    USER("USER"),
-    GUEST("GUEST");
-
+    USER("USER");
     private String name;
     Role(String name){
         this.name = name;
