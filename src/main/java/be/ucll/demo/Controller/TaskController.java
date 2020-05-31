@@ -1,5 +1,6 @@
 package be.ucll.demo.Controller;
 
+import be.ucll.demo.DB.DbException;
 import be.ucll.demo.DB.SubTaskService;
 import be.ucll.demo.DB.TaskService;
 import be.ucll.demo.DTO.SubTaskDTO;
@@ -72,7 +73,12 @@ public class TaskController {
 
     @GetMapping("/tasks/{id}")
     public String getTaskById(Model model, @PathVariable("id") long id){
-        model.addAttribute("task", taskService.get(id));
+        try {
+            model.addAttribute("task", taskService.get(id));
+        }catch (DbException db){
+            model.addAttribute("taskerror","task not found");
+            return "tasks";
+        }
         model.addAttribute("subtasks", subTaskService.getAll(DTOToTask(taskService.get(id))));
         return "/task";
     }

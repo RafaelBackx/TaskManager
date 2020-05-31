@@ -25,6 +25,7 @@
     </nav>
     <h1 class="pl-2" th:text="#{Tasks}"></h1>
     <p class="alert alert-danger" th:if="${error != null}" th:text="${error}"></p>
+    <p class="alert alert-danger" th:if="${taskerror != null}" th:text="${taskerror}"></p>
     <ul id="taskList" class="list-group p-2">
         <div th:each="task : ${tasks}">
             <li class="supperTask list-group-item d-flex justify-content-between mt-3">
