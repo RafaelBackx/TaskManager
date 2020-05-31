@@ -14,7 +14,7 @@
         <li class="nav-item active"><a class="nav-link" href="/add" th:text="#{Add Task}"></a></li>
     </ul>
     <form class="ml-auto mr-2" th:action="@{/logout}" method="post">
-        <input class="btn btn-outline-success" type="submit" value="Logout">
+        <input class="btn btn-outline-success" type="submit" th:value="#{Logout}">
     </form>
     <div  id="language" class="d-flex justify-content-end">
         <button class="btn btn-primary mr-2" href="#">NL</button>

@@ -3,6 +3,7 @@ package be.ucll.demo.Controller;
 import be.ucll.demo.DB.UserService;
 import be.ucll.demo.DTO.CreateUserDTO;
 import be.ucll.demo.DTO.UserDTO;
+import be.ucll.demo.Domain.Role;
 import be.ucll.demo.Domain.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

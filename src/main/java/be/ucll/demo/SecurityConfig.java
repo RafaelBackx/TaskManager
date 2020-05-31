@@ -43,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/tasks/edit/{id}").hasAuthority("ADMIN")
                 .mvcMatchers("/tasks/{id}/sub/create").hasAuthority("ADMIN")
                 .mvcMatchers("/tasks/{id}/sub/edit/{subtaskid}").hasAuthority("ADMIN")
+                .antMatchers("/resources/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().defaultSuccessUrl("/tasks",true)
